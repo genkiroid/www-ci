@@ -101,9 +101,11 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 ### PHP 5.2.17
 RUN curl -sL http://museum.php.net/php5/php-5.2.17.tar.gz -o php-5.2.17.tar.gz
-RUN tar zxf php-5.2.17.tar.gz && cd php-5.2.17 && \
-    ./configure --prefix=/usr/local/php-5.2.17 --enable-cli --disable-cgi && \
-    make && make install
+RUN tar zxf php-5.2.17.tar.gz && cd php-5.2.17
+ADD php-5.2.17.patch /tmp/php-5.2.17.patch
+RUN patch -p0 -b < /tmp/php-5.2.17.patch
+RUN ./configure --prefix=/usr/local/php-5.2.17 --enable-cli --disable-cgi
+RUN make && make install
 
 ### Install idnkit
 RUN wget https://www.nic.ad.jp/ja/idn/idnkit/download/sources/idnkit-1.0-src.tar.gz
